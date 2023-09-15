@@ -126,3 +126,21 @@ pub fn to_hsl(x: Self) color.HSL {
     const a = f.a;
     return color.HSL.initHSLA(h, s, l, a);
 }
+
+pub fn to_hsv(x: Self) color.HSV {
+    const f = x.to_float();
+    const cmax = @max(f.r, f.g, f.b);
+    const cmin = @min(f.r, f.g, f.b);
+    const delta = cmax - cmin;
+    const h = blk: {
+        if (delta == 0) break :blk 0;
+        if (cmax == f.r) break :blk ((((f.g - f.b) / delta) % 6) * 60) % 360;
+        if (cmax == f.g) break :blk ((((f.b - f.r) / delta) + 2) * 60) % 360;
+        if (cmax == f.b) break :blk ((((f.r - f.g) / delta) + 4) * 60) % 360;
+        unreachable;
+    };
+    const s = if (cmax == 0) 0 else delta / cmax;
+    const v = cmax;
+    const a = f.a;
+    return color.HSV.initHSVA(h, s, v, a);
+}
