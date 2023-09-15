@@ -1,0 +1,6 @@
+id: 64sua5o7jqpoobsji25ctt8rgm04j6gyylpny1ecqxyhg1pk
+name: color
+main: mod.zig
+license: MIT
+description: Color init and transformation library for Zig
+dependencies:
