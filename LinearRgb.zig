@@ -24,3 +24,7 @@ pub fn initRGBA(r: u8, g: u8, b: u8, a: u8) Self {
 pub fn eql(x: Self, y: Self) bool {
     return x.r == y.r and x.g == y.g and x.b == y.b;
 }
+
+pub fn relative_luminance(x: Self) f32 {
+    return (0.2126 * x.r) + (0.7152 * x.g) + (0.0722 * x.b);
+}
