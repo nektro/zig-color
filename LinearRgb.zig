@@ -8,7 +8,7 @@ g: f32,
 b: f32,
 a: f32,
 
-pub fn initRGBA(r: u8, g: u8, b: u8, a: u8) Self {
+pub fn initRGBA(r: f32, g: f32, b: f32, a: f32) Self {
     std.debug.assert(r >= 0.0 and r <= 1.0);
     std.debug.assert(g >= 0.0 and g <= 1.0);
     std.debug.assert(b >= 0.0 and b <= 1.0);
