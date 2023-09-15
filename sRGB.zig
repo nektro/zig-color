@@ -42,7 +42,7 @@ pub fn parseHex(input: []const u8) Self {
 }
 
 pub fn eql(x: Self, y: Self) bool {
-    return x.r == y.r and x.g == y.g and x.b == y.b;
+    return x.r == y.r and x.g == y.g and x.b == y.b and x.a == y.a;
 }
 
 pub fn format(x: Self, comptime fmt: []const u8, options: std.fmt.FormatOptions, writer: anytype) !void {
