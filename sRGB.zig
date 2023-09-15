@@ -75,6 +75,7 @@ pub fn format(x: Self, comptime fmt: []const u8, options: std.fmt.FormatOptions,
 
 pub fn to_linear_rgb(x: Self) color.LinearRgb {
     const lut = comptime blk: {
+        @setEvalBranchQuota(10_000);
         var res: [256]f32 = undefined;
         for (0..256) |i| {
             const c = @as(f32, @floatFromInt(i)) / 255.0;
