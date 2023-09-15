@@ -97,3 +97,13 @@ pub fn to_float(x: Self) Float {
         .a = @as(f32, @floatFromInt(x.a)) / 255.0,
     };
 }
+
+pub fn to_cmyk(x: Self) color.CMYK {
+    const f = x.to_float();
+    const k = 1 - @max(f.r, f.g, f.b);
+    const c = (1 - f.r - k) / (1 - k);
+    const m = (1 - f.g - k) / (1 - k);
+    const y = (1 - f.b - k) / (1 - k);
+    const a = f.a;
+    return color.CMYK.initCMYKA(c, m, y, k, a);
+}
