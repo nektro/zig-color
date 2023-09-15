@@ -2,6 +2,7 @@
 
 const std = @import("std");
 const Self = @This();
+const color = @import("./mod.zig");
 
 r: u8, // red value
 g: u8, // green value
@@ -62,4 +63,21 @@ pub fn format(x: Self, comptime fmt: []const u8, options: std.fmt.FormatOptions,
         std.fmt.fmtSliceHexLower(&.{x.g}),
         std.fmt.fmtSliceHexLower(&.{x.b}),
     });
+}
+
+pub fn to_linear_rgb(x: Self) color.LinearRgb {
+    const lut = comptime blk: {
+        var res: [256]f32 = undefined;
+        for (0..256) |i| {
+            const c = @as(f32, @floatFromInt(i)) / 255.0;
+            res[i] = if (c <= 0.04045) c / 12.92 else std.math.pow(f32, (c + 0.055) / 1.055, 2.4);
+        }
+        break :blk res;
+    };
+    return color.LinearRgb.initRGBA(
+        lut[x.r],
+        lut[x.g],
+        lut[x.b],
+        lut[x.a],
+    );
 }
