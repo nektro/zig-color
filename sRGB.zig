@@ -9,6 +9,13 @@ g: u8, // green value
 b: u8, // blue value
 a: u8, // alpha value
 
+pub const Float = struct {
+    r: f32,
+    g: f32,
+    b: f32,
+    a: f32,
+};
+
 pub fn initRGBA(r: u8, g: u8, b: u8, a: u8) Self {
     return Self{
         .r = r,
@@ -80,4 +87,13 @@ pub fn to_linear_rgb(x: Self) color.LinearRgb {
         lut[x.b],
         lut[x.a],
     );
+}
+
+pub fn to_float(x: Self) Float {
+    return Self{
+        .r = @as(f32, @floatFromInt(x.r)) / 255.0,
+        .g = @as(f32, @floatFromInt(x.g)) / 255.0,
+        .b = @as(f32, @floatFromInt(x.b)) / 255.0,
+        .a = @as(f32, @floatFromInt(x.a)) / 255.0,
+    };
 }
