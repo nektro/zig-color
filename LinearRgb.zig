@@ -3,10 +3,10 @@
 const std = @import("std");
 const Self = @This();
 
-r: f32,
-g: f32,
-b: f32,
-a: f32,
+r: f32, // red
+g: f32, // green
+b: f32, // blue
+a: f32, // alpha
 
 pub fn initRGBA(r: f32, g: f32, b: f32, a: f32) Self {
     std.debug.assert(r >= 0.0 and r <= 1.0);
