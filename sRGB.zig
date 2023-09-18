@@ -3,7 +3,6 @@
 const std = @import("std");
 const Self = @This();
 const color = @import("./mod.zig");
-const _x = @import("./x.zig");
 
 r: u8, // red value
 g: u8, // green value
@@ -123,7 +122,7 @@ pub fn to_hsl(x: Self) color.HSL {
         unreachable;
     };
     const l = (cmax + cmin) / 2;
-    const s = if (delta == 0) 0 else delta / (1 - _x.abs(2 * l - 1));
+    const s = if (delta == 0) 0 else delta / (1 - @fabs(2 * l - 1));
     const a = f.a;
     return color.HSL.initHSLA(h, s, l, a);
 }
