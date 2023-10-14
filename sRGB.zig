@@ -3,6 +3,7 @@
 const std = @import("std");
 const Self = @This();
 const color = @import("./mod.zig");
+const _x = @import("./_x.zig");
 
 r: u8, // red value
 g: u8, // green value
@@ -71,6 +72,8 @@ pub fn format(x: Self, comptime fmt: []const u8, options: std.fmt.FormatOptions,
         std.fmt.fmtSliceHexLower(&.{x.b}),
     });
 }
+
+pub usingnamespace _x.mixin(@This(), .r, .g, .b);
 
 pub fn to_linear_rgb(x: Self) color.LinearRgb {
     const lut = comptime blk: {
