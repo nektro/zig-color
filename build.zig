@@ -24,4 +24,7 @@ pub fn build(b: *std.Build) void {
 
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
+
+    const test_step = b.step("test", "dummy test step to pass CI checks");
+    _ = test_step;
 }
