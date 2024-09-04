@@ -24,5 +24,14 @@ pub fn mixin(
             x.a = @intFromFloat(in[3]);
             return x;
         }
+
+        pub fn to_array(x: T, comptime I: type) [4]I {
+            return .{
+                @field(x, @tagName(f1)),
+                @field(x, @tagName(f2)),
+                @field(x, @tagName(f3)),
+                x.a,
+            };
+        }
     };
 }
