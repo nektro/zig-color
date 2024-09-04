@@ -147,3 +147,15 @@ pub fn to_hsv(x: Self) color.HSV {
     const a = f.a;
     return color.HSV.initHSVA(h, s, v, a);
 }
+
+pub fn to_ycbcr(x: Self) color.YCbCr {
+    // zig fmt: off
+    const f = x.to_vec();
+    return color.YCbCr.from_vec(.{
+        ( 0.299  * f.r +  0.587  * f.g +  0.114  * f.b) + 0,
+        (-0.1687 * f.r + -0.3313 * f.g +  0.5    * f.b) + 128,
+        ( 0.5    * f.r + -0.4187 * f.g + -0.0813 * f.b) + 128,
+        f.a,
+    });
+    // zig fmt: on
+}
