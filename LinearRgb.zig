@@ -2,6 +2,7 @@
 
 const std = @import("std");
 const Self = @This();
+const _x = @import("./_x.zig");
 
 r: f32, // red
 g: f32, // green
@@ -28,3 +29,5 @@ pub fn eql(x: Self, y: Self) bool {
 pub fn relative_luminance(x: Self) f32 {
     return (0.2126 * x.r) + (0.7152 * x.g) + (0.0722 * x.b);
 }
+
+pub usingnamespace _x.mixin(@This(), f32, .r, .g, .b);

@@ -73,7 +73,7 @@ pub fn format(x: Self, comptime fmt: []const u8, options: std.fmt.FormatOptions,
     });
 }
 
-pub usingnamespace _x.mixin(@This(), .r, .g, .b);
+pub usingnamespace _x.mixin(@This(), u8, .r, .g, .b);
 
 pub fn to_linear_rgb(x: Self) color.LinearRgb {
     const lut = comptime blk: {
@@ -94,7 +94,7 @@ pub fn to_linear_rgb(x: Self) color.LinearRgb {
 }
 
 pub fn to_float(x: Self) Float {
-    return Self{
+    return .{
         .r = @as(f32, @floatFromInt(x.r)) / 255.0,
         .g = @as(f32, @floatFromInt(x.g)) / 255.0,
         .b = @as(f32, @floatFromInt(x.b)) / 255.0,
@@ -119,9 +119,9 @@ pub fn to_hsl(x: Self) color.HSL {
     const delta = cmax - cmin;
     const h = blk: {
         if (delta == 0) break :blk 0;
-        if (cmax == f.r) break :blk ((((f.g - f.b) / delta) % 6) * 60) % 360;
-        if (cmax == f.g) break :blk ((((f.b - f.r) / delta) + 2) * 60) % 360;
-        if (cmax == f.b) break :blk ((((f.r - f.g) / delta) + 4) * 60) % 360;
+        if (cmax == f.r) break :blk @rem(((f.g - f.b) / delta), 6.0) / 6.0;
+        if (cmax == f.g) break :blk (((f.b - f.r) / delta) + 2) / 6.0;
+        if (cmax == f.b) break :blk (((f.r - f.g) / delta) + 4) / 6.0;
         unreachable;
     };
     const l = (cmax + cmin) / 2;
@@ -137,9 +137,9 @@ pub fn to_hsv(x: Self) color.HSV {
     const delta = cmax - cmin;
     const h = blk: {
         if (delta == 0) break :blk 0;
-        if (cmax == f.r) break :blk ((((f.g - f.b) / delta) % 6) * 60) % 360;
-        if (cmax == f.g) break :blk ((((f.b - f.r) / delta) + 2) * 60) % 360;
-        if (cmax == f.b) break :blk ((((f.r - f.g) / delta) + 4) * 60) % 360;
+        if (cmax == f.r) break :blk (@rem(((f.g - f.b) / delta), 6.0) / 6.0);
+        if (cmax == f.g) break :blk ((((f.b - f.r) / delta) + 2) / 6.0);
+        if (cmax == f.b) break :blk ((((f.r - f.g) / delta) + 4) / 6.0);
         unreachable;
     };
     const s = if (cmax == 0) 0 else delta / cmax;

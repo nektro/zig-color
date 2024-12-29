@@ -2,6 +2,7 @@ const std = @import("std");
 
 pub fn mixin(
     comptime T: type,
+    comptime I: type,
     comptime f1: std.meta.FieldEnum(T),
     comptime f2: std.meta.FieldEnum(T),
     comptime f3: std.meta.FieldEnum(T),
@@ -25,7 +26,7 @@ pub fn mixin(
             return x;
         }
 
-        pub fn to_array(x: T, comptime I: type) [4]I {
+        pub fn to_array(x: T) [4]I {
             return .{
                 @field(x, @tagName(f1)),
                 @field(x, @tagName(f2)),

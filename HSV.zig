@@ -2,6 +2,7 @@
 
 const std = @import("std");
 const Self = @This();
+const _x = @import("./_x.zig");
 
 h: f32, // hue
 s: f32, // saturation
@@ -24,3 +25,5 @@ pub fn initHSVA(h: f32, s: f32, v: f32, a: f32) Self {
 pub fn eql(x: Self, y: Self) bool {
     return x.h == y.h and x.s == y.s and x.v == y.v and x.a == y.a;
 }
+
+pub usingnamespace _x.mixin(@This(), f32, .h, .s, .v);

@@ -27,3 +27,13 @@ pub fn initCMYKA(c: f32, m: f32, y: f32, k: f32, a: f32) Self {
 pub fn eql(x: Self, y: Self) bool {
     return x.c == y.c and x.m == y.m and x.y == y.y and x.k == y.k and x.a == y.a;
 }
+
+pub fn to_array(x: Self) [5]f32 {
+    return .{
+        x.c,
+        x.m,
+        x.y,
+        x.k,
+        x.a,
+    };
+}
