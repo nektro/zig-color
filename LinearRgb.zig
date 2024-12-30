@@ -30,14 +30,15 @@ pub fn eql(x: Self, y: Self) bool {
 
 // https://www.w3.org/TR/WCAG/#dfn-relative-luminance
 pub fn relative_luminance(x: Self) f32 {
-    return (0.2126 * x.r) + (0.7152 * x.g) + (0.0722 * x.b);
+    const r, const g, const b, _ = x.to_array();
+    return (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
 }
 
 pub usingnamespace _x.mixin(@This(), f32, .r, .g, .b);
 
 // https://gamedev.stackexchange.com/a/194038
 pub fn to_srgb(x: Self) color.sRGB {
-    const v: vec4 = x.to_array();
+    const v = x.to_vec();
     const cutoff = v < @as(vec4, @splat(0.0031308));
     const higher = @as(vec4, @splat(1.055)) * std.math.pow(vec4, v, @splat(1.0 / 2.4)) - @as(vec4, @splat(0.055));
     const lower = v * @as(vec4, @splat(12.92));

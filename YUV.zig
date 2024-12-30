@@ -40,6 +40,5 @@ pub fn to_srgb(x: Self) color.sRGB {
 }
 
 pub fn normal(x: Self) vec4 {
-    const v: vec4 = x.to_array();
-    return v * @as(vec4, .{ 255, 255, 255, 1 });
+    return x.to_vec() * @as(vec4, .{ 255, 255, 255, 1 });
 }
