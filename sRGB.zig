@@ -4,6 +4,7 @@ const std = @import("std");
 const Self = @This();
 const color = @import("./mod.zig");
 const _x = @import("./_x.zig");
+const vec4 = @Vector(4, f32);
 
 r: u8, // red value
 g: u8, // green value
@@ -104,8 +105,8 @@ pub fn to_float(x: Self) Float {
     };
 }
 
-pub fn from_float(y: @Vector(4, f32)) Self {
-    const r, const g, const b, const a = y * @as(@Vector(4, f32), @splat(255.0));
+pub fn from_float(y: vec4) Self {
+    const r, const g, const b, const a = y * @as(vec4, @splat(255.0));
     return .{
         .r = @intFromFloat(r),
         .g = @intFromFloat(g),
@@ -172,5 +173,16 @@ pub fn to_ycbcr(x: Self) color.YCbCr {
         ( 0.5    * r + -0.4187 * g + -0.0813 * b) + 128,
         a,
     });
+    // zig fmt: on
+}
+
+// https://web.archive.org/web/20180423091842/http://www.equasys.de/colorconversion.html
+pub fn to_yuv(x: Self) color.YUV {
+    // zig fmt: off
+    const r, const g, const b, const a = x.to_vec() / @as(vec4, @splat(255));
+    const y = r *  0.299 + g *  0.587 + b *  0.114;
+    const u = r * -0.147 + g * -0.289 + b *  0.436;
+    const v = r *  0.615 + g * -0.515 + b * -0.100;
+    return color.YUV.initYUVA(y, u, v, a);
     // zig fmt: on
 }

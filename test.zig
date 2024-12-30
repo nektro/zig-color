@@ -72,4 +72,13 @@ test {
         try expect(o.to_ycbcr().to_array()).toEqual(.{ 166, 173, 65, 255 });
         try expect(o.to_ycbcr().to_srgb().to_array()).toEqual(.{ 77, 195, 245, 255 });
     }
+    {
+        //    Y: 166.244, U: 39.741, V: -76.541
+        const y, const u, const v, const a = o.to_yuv().normal();
+        try std.testing.expectApproxEqAbs(166.244, y, 0.001);
+        try std.testing.expectApproxEqAbs(39.723, u, 0.001);
+        try std.testing.expectApproxEqAbs(-76.539, v, 0.001);
+        try std.testing.expect(a == 1.0);
+        try expect(o.to_yuv().to_srgb().to_array()).toEqual(.{ 78, 195, 246, 255 });
+    }
 }
