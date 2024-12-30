@@ -75,6 +75,8 @@ pub fn format(x: Self, comptime fmt: []const u8, options: std.fmt.FormatOptions,
 
 pub usingnamespace _x.mixin(@This(), u8, .r, .g, .b);
 
+// https://www.w3.org/TR/WCAG/#dfn-relative-luminance
+// https://webstore.iec.ch/publication/6169
 pub fn to_linear_rgb(x: Self) color.LinearRgb {
     const lut = comptime blk: {
         @setEvalBranchQuota(10_000);
@@ -102,6 +104,17 @@ pub fn to_float(x: Self) Float {
     };
 }
 
+pub fn from_float(y: @Vector(4, f32)) Self {
+    const r, const g, const b, const a = y * @as(@Vector(4, f32), @splat(255.0));
+    return .{
+        .r = @intFromFloat(r),
+        .g = @intFromFloat(g),
+        .b = @intFromFloat(b),
+        .a = @intFromFloat(a),
+    };
+}
+
+// https://www.rapidtables.com/convert/color/rgb-to-cmyk.html
 pub fn to_cmyk(x: Self) color.CMYK {
     const f = x.to_float();
     const k = 1 - @max(f.r, f.g, f.b);
@@ -112,6 +125,7 @@ pub fn to_cmyk(x: Self) color.CMYK {
     return color.CMYK.initCMYKA(c, m, y, k, a);
 }
 
+// https://www.rapidtables.com/convert/color/rgb-to-hsl.html
 pub fn to_hsl(x: Self) color.HSL {
     const f = x.to_float();
     const cmax = @max(f.r, f.g, f.b);
@@ -130,6 +144,7 @@ pub fn to_hsl(x: Self) color.HSL {
     return color.HSL.initHSLA(h, s, l, a);
 }
 
+// https://www.rapidtables.com/convert/color/rgb-to-hsv.html
 pub fn to_hsv(x: Self) color.HSV {
     const f = x.to_float();
     const cmax = @max(f.r, f.g, f.b);
@@ -150,12 +165,12 @@ pub fn to_hsv(x: Self) color.HSV {
 
 pub fn to_ycbcr(x: Self) color.YCbCr {
     // zig fmt: off
-    const f = x.to_vec();
+    const r, const g, const b, const a  = x.to_vec();
     return color.YCbCr.from_vec(.{
-        ( 0.299  * f.r +  0.587  * f.g +  0.114  * f.b) + 0,
-        (-0.1687 * f.r + -0.3313 * f.g +  0.5    * f.b) + 128,
-        ( 0.5    * f.r + -0.4187 * f.g + -0.0813 * f.b) + 128,
-        f.a,
+        ( 0.299  * r +  0.587  * g +  0.114  * b) + 0,
+        (-0.1687 * r + -0.3313 * g +  0.5    * b) + 128,
+        ( 0.5    * r + -0.4187 * g + -0.0813 * b) + 128,
+        a,
     });
     // zig fmt: on
 }

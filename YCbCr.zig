@@ -27,16 +27,16 @@ pub fn eql(x: Self, y: Self) bool {
     return x.y == y.y and x.cb == y.cb and x.cr == y.cr and x.a == y.a;
 }
 
-pub usingnamespace _x.mixin(@This(), .y, .cb, .cr);
+pub usingnamespace _x.mixin(@This(), u8, .y, .cb, .cr);
 
 pub fn to_srgb(x: Self) color.sRGB {
     // zig fmt: off
-    const f = x.to_vec();
+    const r, const g, const b, const a = x.to_vec();
     return color.sRGB.from_vec(.{
-        @max(0, @min(255, f[0]                        + 1.402   * (f[2]-128))),
-        @max(0, @min(255, f[0] - 0.34414 * (f[1]-128) - 0.71414 * (f[2]-128))),
-        @max(0, @min(255, f[0] + 1.772   * (f[1]-128))),
-        @max(0, @min(255, f[3])),
+        @max(0, @min(255, r                     + 1.402   * (b-128))),
+        @max(0, @min(255, r - 0.34414 * (g-128) - 0.71414 * (b-128))),
+        @max(0, @min(255, r + 1.772   * (g-128))),
+        @max(0, @min(255, a)),
     });
     // zig fmt: on
 }

@@ -2,6 +2,7 @@
 
 const std = @import("std");
 const Self = @This();
+const color = @import("./mod.zig");
 
 c: f32, // cyan
 m: f32, // magenta
@@ -36,4 +37,13 @@ pub fn to_array(x: Self) [5]f32 {
         x.k,
         x.a,
     };
+}
+
+// https://www.rapidtables.com/convert/color/cmyk-to-rgb.html
+pub fn to_srgb(x: Self) color.sRGB {
+    const c, const m, const y, const k, const a = x.to_array();
+    const r = (1 - c) * (1 - k);
+    const g = (1 - m) * (1 - k);
+    const b = (1 - y) * (1 - k);
+    return color.sRGB.from_float(.{ r, g, b, a });
 }
