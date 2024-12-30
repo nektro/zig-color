@@ -6,10 +6,10 @@ const color = @import("./mod.zig");
 const _x = @import("./_x.zig");
 const vec4 = @Vector(4, f32);
 
-r: f32, // red
-g: f32, // green
-b: f32, // blue
-a: f32, // alpha
+r: f32, // red    [ 0 .. 1]
+g: f32, // green  [ 0 .. 1]
+b: f32, // blue   [ 0 .. 1]
+a: f32, // alpha  [ 0 .. 1]
 
 pub fn initRGBA(r: f32, g: f32, b: f32, a: f32) Self {
     std.debug.assert(r >= 0.0 and r <= 1.0);

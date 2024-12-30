@@ -5,10 +5,10 @@ const Self = @This();
 const color = @import("./mod.zig");
 const _x = @import("./_x.zig");
 
-h: f32, // hue
-s: f32, // saturation
-v: f32, // value
-a: f32, // alpha
+h: f32, // hue         [ 0 .. 1 ]
+s: f32, // saturation  [ 0 .. 1 ]
+v: f32, // value       [ 0 .. 1 ]
+a: f32, // alpha       [ 0 .. 1 ]
 
 pub fn initHSVA(h: f32, s: f32, v: f32, a: f32) Self {
     std.debug.assert(h >= 0.0 and h <= 1.0);

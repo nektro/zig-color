@@ -4,11 +4,11 @@ const std = @import("std");
 const Self = @This();
 const color = @import("./mod.zig");
 
-c: f32, // cyan
-m: f32, // magenta
-y: f32, // yellow
-k: f32, // black
-a: f32, // alpha
+c: f32, // cyan     [ 0 .. 1 ]
+m: f32, // magenta  [ 0 .. 1 ]
+y: f32, // yellow   [ 0 .. 1 ]
+k: f32, // black    [ 0 .. 1 ]
+a: f32, // alpha    [ 0 .. 1 ]
 
 pub fn initCMYKA(c: f32, m: f32, y: f32, k: f32, a: f32) Self {
     std.debug.assert(c >= 0.0 and c <= 1.0);
