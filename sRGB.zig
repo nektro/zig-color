@@ -11,13 +11,6 @@ g: u8, // green value
 b: u8, // blue value
 a: u8, // alpha value
 
-pub const Float = struct {
-    r: f32,
-    g: f32,
-    b: f32,
-    a: f32,
-};
-
 pub fn initRGBA(r: u8, g: u8, b: u8, a: u8) Self {
     return Self{
         .r = r,
@@ -96,13 +89,8 @@ pub fn to_linear_rgb(x: Self) color.LinearRgb {
     );
 }
 
-pub fn to_float(x: Self) Float {
-    return .{
-        .r = @as(f32, @floatFromInt(x.r)) / 255.0,
-        .g = @as(f32, @floatFromInt(x.g)) / 255.0,
-        .b = @as(f32, @floatFromInt(x.b)) / 255.0,
-        .a = @as(f32, @floatFromInt(x.a)) / 255.0,
-    };
+pub fn to_float(x: Self) vec4 {
+    return x.to_vec() / @as(vec4, @splat(255.0));
 }
 
 pub fn from_float(y: vec4) Self {
@@ -117,50 +105,47 @@ pub fn from_float(y: vec4) Self {
 
 // https://www.rapidtables.com/convert/color/rgb-to-cmyk.html
 pub fn to_cmyk(x: Self) color.CMYK {
-    const f = x.to_float();
-    const k = 1 - @max(f.r, f.g, f.b);
-    const c = (1 - f.r - k) / (1 - k);
-    const m = (1 - f.g - k) / (1 - k);
-    const y = (1 - f.b - k) / (1 - k);
-    const a = f.a;
+    const r, const g, const b, const a = x.to_float();
+    const k = 1 - @max(r, g, b);
+    const c = (1 - r - k) / (1 - k);
+    const m = (1 - g - k) / (1 - k);
+    const y = (1 - b - k) / (1 - k);
     return color.CMYK.initCMYKA(c, m, y, k, a);
 }
 
 // https://www.rapidtables.com/convert/color/rgb-to-hsl.html
 pub fn to_hsl(x: Self) color.HSL {
-    const f = x.to_float();
-    const cmax = @max(f.r, f.g, f.b);
-    const cmin = @min(f.r, f.g, f.b);
+    const r, const g, const b, const a = x.to_float();
+    const cmax = @max(r, g, b);
+    const cmin = @min(r, g, b);
     const delta = cmax - cmin;
     const h = blk: {
         if (delta == 0) break :blk 0;
-        if (cmax == f.r) break :blk @rem(((f.g - f.b) / delta), 6.0) / 6.0;
-        if (cmax == f.g) break :blk (((f.b - f.r) / delta) + 2) / 6.0;
-        if (cmax == f.b) break :blk (((f.r - f.g) / delta) + 4) / 6.0;
+        if (cmax == r) break :blk @rem(((g - b) / delta), 6.0) / 6.0;
+        if (cmax == g) break :blk (((b - r) / delta) + 2) / 6.0;
+        if (cmax == b) break :blk (((r - g) / delta) + 4) / 6.0;
         unreachable;
     };
     const l = (cmax + cmin) / 2;
     const s = if (delta == 0) 0 else delta / (1 - @abs(2 * l - 1));
-    const a = f.a;
     return color.HSL.initHSLA(h, s, l, a);
 }
 
 // https://www.rapidtables.com/convert/color/rgb-to-hsv.html
 pub fn to_hsv(x: Self) color.HSV {
-    const f = x.to_float();
-    const cmax = @max(f.r, f.g, f.b);
-    const cmin = @min(f.r, f.g, f.b);
+    const r, const g, const b, const a = x.to_float();
+    const cmax = @max(r, g, b);
+    const cmin = @min(r, g, b);
     const delta = cmax - cmin;
     const h = blk: {
         if (delta == 0) break :blk 0;
-        if (cmax == f.r) break :blk (@rem(((f.g - f.b) / delta), 6.0) / 6.0);
-        if (cmax == f.g) break :blk ((((f.b - f.r) / delta) + 2) / 6.0);
-        if (cmax == f.b) break :blk ((((f.r - f.g) / delta) + 4) / 6.0);
+        if (cmax == r) break :blk (@rem(((g - b) / delta), 6.0) / 6.0);
+        if (cmax == g) break :blk ((((b - r) / delta) + 2) / 6.0);
+        if (cmax == b) break :blk ((((r - g) / delta) + 4) / 6.0);
         unreachable;
     };
     const s = if (cmax == 0) 0 else delta / cmax;
     const v = cmax;
-    const a = f.a;
     return color.HSV.initHSVA(h, s, v, a);
 }
 
