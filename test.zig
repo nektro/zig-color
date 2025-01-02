@@ -1,19 +1,6 @@
 const std = @import("std");
 const color = @import("color");
-
-fn expect(actual: anytype) Expect(@TypeOf(actual)) {
-    return .{ .actual = actual };
-}
-
-fn Expect(T: type) type {
-    return struct {
-        actual: T,
-
-        fn toEqual(self: *const @This(), expected: T) !void {
-            try std.testing.expectEqual(expected, self.actual);
-        }
-    };
-}
+const expect = @import("expect").expect;
 
 test {
     // https://www.colorhexa.com/4fc3f7
