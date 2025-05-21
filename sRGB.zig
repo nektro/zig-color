@@ -51,7 +51,7 @@ pub fn format(x: Self, comptime fmt: []const u8, options: std.fmt.FormatOptions,
     _ = fmt;
     _ = options;
     if (x.a < 255) {
-        @setCold(true);
+        @branchHint(.cold);
         try writer.print("#{:0>2}{:0>2}{:0>2}{:0>2}", .{
             std.fmt.fmtSliceHexLower(&.{x.r}),
             std.fmt.fmtSliceHexLower(&.{x.g}),
@@ -73,7 +73,7 @@ pub usingnamespace _x.mixin(@This(), u8, .r, .g, .b);
 // https://webstore.iec.ch/publication/6169
 pub fn to_linear_rgb(x: Self) color.LinearRgb {
     const lut = comptime blk: {
-        @setEvalBranchQuota(10_000);
+        @setEvalBranchQuota(20_000);
         var res: [256]f32 = undefined;
         for (0..256) |i| {
             const c = @as(f32, @floatFromInt(i)) / 255.0;
