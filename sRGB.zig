@@ -67,7 +67,10 @@ pub fn format(x: Self, comptime fmt: []const u8, options: std.fmt.FormatOptions,
     });
 }
 
-pub usingnamespace _x.mixin(@This(), u8, .r, .g, .b);
+const M = _x.mixin(@This(), u8, .r, .g, .b);
+pub const to_vec = M.to_vec;
+pub const from_vec = M.from_vec;
+pub const to_array = M.to_array;
 
 // https://www.w3.org/TR/WCAG/#dfn-relative-luminance
 // https://webstore.iec.ch/publication/6169

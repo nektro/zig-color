@@ -26,7 +26,10 @@ pub fn eql(x: Self, y: Self) bool {
     return x.y == y.y and x.u == y.u and x.v == y.v and x.a == y.a;
 }
 
-pub usingnamespace _x.mixin(@This(), f32, .y, .u, .v);
+pub const M = _x.mixin(@This(), f32, .y, .u, .v);
+pub const to_vec = M.to_vec;
+pub const from_vec = M.from_vec;
+pub const to_array = M.to_array;
 
 // https://web.archive.org/web/20180423091842/http://www.equasys.de/colorconversion.html
 pub fn to_srgb(x: Self) color.sRGB {

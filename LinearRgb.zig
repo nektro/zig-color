@@ -34,7 +34,10 @@ pub fn relative_luminance(x: Self) f32 {
     return (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
 }
 
-pub usingnamespace _x.mixin(@This(), f32, .r, .g, .b);
+const M = _x.mixin(@This(), f32, .r, .g, .b);
+pub const to_vec = M.to_vec;
+pub const from_vec = M.from_vec;
+pub const to_array = M.to_array;
 
 // https://gamedev.stackexchange.com/a/194038
 pub fn to_srgb(x: Self) color.sRGB {

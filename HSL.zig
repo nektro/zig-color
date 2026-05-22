@@ -27,7 +27,10 @@ pub fn eql(x: Self, y: Self) bool {
     return x.h == y.h and x.s == y.s and x.l == y.l and x.a == y.a;
 }
 
-pub usingnamespace _x.mixin(@This(), f32, .h, .s, .l);
+const M = _x.mixin(@This(), f32, .h, .s, .l);
+pub const to_vec = M.to_vec;
+pub const from_vec = M.from_vec;
+pub const to_array = M.to_array;
 
 // https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB
 // https://www.rapidtables.com/convert/color/hsl-to-rgb.html

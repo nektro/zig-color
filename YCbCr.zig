@@ -27,7 +27,10 @@ pub fn eql(x: Self, y: Self) bool {
     return x.y == y.y and x.cb == y.cb and x.cr == y.cr and x.a == y.a;
 }
 
-pub usingnamespace _x.mixin(@This(), u8, .y, .cb, .cr);
+const M = _x.mixin(@This(), u8, .y, .cb, .cr);
+pub const to_vec = M.to_vec;
+pub const from_vec = M.from_vec;
+pub const to_array = M.to_array;
 
 pub fn to_srgb(x: Self) color.sRGB {
     // zig fmt: off
