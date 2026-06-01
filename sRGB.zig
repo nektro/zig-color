@@ -1,6 +1,7 @@
 //! object representing a single color in the sRGB colorspace with channel values from 0-255
 
 const std = @import("std");
+const extras = @import("extras");
 const Self = @This();
 const color = @import("./mod.zig");
 const _x = @import("./_x.zig");
@@ -27,9 +28,9 @@ pub fn initRGB(r: u8, g: u8, b: u8) Self {
 pub fn parseHexConst(comptime input: *const [7:0]u8) Self {
     comptime std.debug.assert(input[0] == '#');
     return comptime initRGB(
-        std.fmt.parseInt(u8, input[1..3], 16) catch unreachable,
-        std.fmt.parseInt(u8, input[3..5], 16) catch unreachable,
-        std.fmt.parseInt(u8, input[5..7], 16) catch unreachable,
+        extras.parseDigits(u8, input[1..3], 16) catch unreachable,
+        extras.parseDigits(u8, input[3..5], 16) catch unreachable,
+        extras.parseDigits(u8, input[5..7], 16) catch unreachable,
     );
 }
 
@@ -37,9 +38,9 @@ pub fn parseHex(input: []const u8) Self {
     std.debug.assert(input.len == 7);
     std.debug.assert(input[0] == '#');
     return initRGB(
-        std.fmt.parseInt(u8, input[1..3], 16) catch unreachable,
-        std.fmt.parseInt(u8, input[3..5], 16) catch unreachable,
-        std.fmt.parseInt(u8, input[5..7], 16) catch unreachable,
+        extras.parseDigits(u8, input[1..3], 16) catch unreachable,
+        extras.parseDigits(u8, input[3..5], 16) catch unreachable,
+        extras.parseDigits(u8, input[5..7], 16) catch unreachable,
     );
 }
 
