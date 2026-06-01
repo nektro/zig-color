@@ -48,24 +48,13 @@ pub fn eql(x: Self, y: Self) bool {
     return x.r == y.r and x.g == y.g and x.b == y.b and x.a == y.a;
 }
 
-pub fn format(x: Self, comptime fmt: []const u8, options: std.fmt.FormatOptions, writer: anytype) !void {
-    _ = fmt;
-    _ = options;
+pub fn nprint(x: Self, writer: anytype) !void {
     if (x.a < 255) {
         @branchHint(.cold);
-        try writer.print("#{:0>2}{:0>2}{:0>2}{:0>2}", .{
-            std.fmt.fmtSliceHexLower(&.{x.r}),
-            std.fmt.fmtSliceHexLower(&.{x.g}),
-            std.fmt.fmtSliceHexLower(&.{x.b}),
-            std.fmt.fmtSliceHexLower(&.{x.a}),
-        });
+        try writer.print("#{x:0>2}{x:0>2}{x:0>2}{x:0>2}", .{ x.r, x.g, x.b, x.a });
         return;
     }
-    try writer.print("#{:0>2}{:0>2}{:0>2}", .{
-        std.fmt.fmtSliceHexLower(&.{x.r}),
-        std.fmt.fmtSliceHexLower(&.{x.g}),
-        std.fmt.fmtSliceHexLower(&.{x.b}),
-    });
+    try writer.print("#{x:0>2}{x:0>2}{x:0>2}", .{ x.r, x.g, x.b });
 }
 
 const M = _x.mixin(@This(), u8, .r, .g, .b);
